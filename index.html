@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Praktik VPS AWS - Laporan Praktikum</title>
+    <style>
+        body { font-family: Arial, sans-serif; line-height: 1.6; margin: 0; padding: 20px; background-color: #f4f6f9; color: #333; }
+        .container { max-width: 800px; margin: auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); }
+        h1, h2 { color: #232f3e; border-bottom: 2px solid #ff9900; padding-bottom: 5px; }
+        h1 { text-align: center; color: #ff9900; }
+        .identity { background: #eaeded; padding: 15px; border-radius: 5px; margin-bottom: 20px; }
+        .identity table { width: 100%; border-collapse: collapse; }
+        .identity td { padding: 5px; }
+        table.data-table { width: 100%; border-collapse: collapse; margin-top: 10px; margin-bottom: 20px; }
+        table.data-table, th, td { border: 1px solid #ddd; }
+        th, td { padding: 10px; text-align: left; }
+        th { background-color: #232f3e; color: white; }
+        ul { list-style-type: none; padding-left: 0; }
+        li { padding: 5px 0; }
+        .box { background: #fff8e1; border-left: 4px solid #ffb300; padding: 10px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Laporan LKPD Praktik VPS AWS</h1>
+    
+    <div class="identity">
+        <table>
+            <tr>
+                <td><strong>Nama:</strong> [Nama Anda]</td>
+                <td><strong>Tanggal:</strong> [Tanggal Praktik]</td>
+            </tr>
+            <tr>
+                <td><strong>Kelas:</strong> [Kelas Anda]</td>
+                <td><strong>Instruktur:</strong> [Nama Instruktur]</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Fase 1 -->
+    <h2>Fase 1: Pengenalan Konsep VPS & Cloud</h2>
+    <ul>
+        <li><strong>Shared Hosting:</strong> Layanan hosting di mana satu server fisik digunakan bersama-sama oleh banyak pengguna, sumber daya dibagi rata.</li>
+        <li><strong>Dedicated Server:</strong> Server fisik utuh yang disewakan penuh untuk satu pengguna dengan kontrol dan performa penuh.</li>
+        <li><strong>Amazon Lightsail:</strong> Layanan VPS instan dari AWS yang dikhususkan untuk pemula dengan konfigurasi sederhana dan harga tetap.</li>
+        <li><strong>Amazon EC2:</strong> Layanan *Elastic Compute Cloud* dari AWS yang menyediakan virtual server (instance) fleksibel dan skalabel.</li>
+    </ul>
+
+    <!-- Fase 2 -->
+    <h2>Fase 2: Persiapan dan Provisioning Server</h2>
+    <ul>
+        <li>[✔] Mengaktifkan akun AWS dan login ke Management Console[cite: 2].</li>
+        <li>[✔] Memilih Region AWS terdekat (misal: ap-southeast-1 / Singapore)[cite: 2].</li>
+        <li>[✔] Memilih Amazon Machine Image (AMI), misalnya Ubuntu 22.04 LTS / Windows Server[cite: 2].</li>
+        <li>[✔] Memilih Instance Type dalam batas Free Tier / Tipe yang sesuai[cite: 2].</li>
+    </ul>
+    <div class="box">
+        <strong>Nama Key Pair yang dibuat:</strong> <code>vps-key-aws.pem</code>
+    </div>
+
+    <!-- Fase 3 -->
+    <h2>Fase 3: Jaringan, Keamanan, dan Akses Server</h2>
+    <table class="data-table">
+        <tr>
+            <th>Tipe Akses</th>
+            <th>Protokol</th>
+            <th>Port Range</th>
+            <th>Source</th>
+            <th>Deskripsi / Kegunaan</th>
+        </tr>
+        <tr><td>SSH</td><td>TCP</td><td>22</td><td>Anywhere</td><td>Akses remote terminal[cite: 3]</td></tr>
+        <tr><td>HTTP</td><td>TCP</td><td>80</td><td>Anywhere</td><td>Akses website tanpa enkripsi[cite: 3]</td></tr>
+        <tr><td>HTTPS</td><td>TCP</td><td>443</td><td>Anywhere</td><td>Akses website aman (SSL)[cite: 3]</td></tr>
+        <tr><td>Custom TCP</td><td>TCP</td><td>8080</td><td>My IP</td><td>Akses panel admin khusus[cite: 3]</td></tr>
+    </table>
+    <p><strong>Perintah SSH:</strong></p>
+    <code>ssh -i "vps-key-aws.pem" ubuntu@&lt;ip-publik&gt;</code>
+
+    <!-- Fase 4 -->
+    <h2>Fase 4: Konfigurasi Sistem Operasi & Web Server</h2>
+    <p><strong>Pencocokan Perintah Linux:</strong></p>
+    <ol>
+        <li><code>sudo apt update</code> → <strong>C.</strong> Memperbarui daftar paket repositori OS[cite: 3]</li>
+        <li><code>sudo systemctl restart apache2</code> → <strong>D.</strong> Memuat ulang layanan web server[cite: 3]</li>
+        <li><code>ls -la</code> → <strong>A.</strong> Menampilkan seluruh file termasuk yang tersembunyi[cite: 3]</li>
+        <li><code>chmod 400 key.pem</code> → <strong>B.</strong> Mengubah hak akses file menjadi read-only[cite: 3]</li>
+    </ol>
+    <div class="box">
+        <strong>Alamat IP Publik Server:</strong> <a href="http://lokalhost" target="_blank">http://&lt;IP-Publik-Server-Anda&gt;</a>[cite: 3]
+    </div>
+
+    <!-- Fase 5 -->
+    <h2>Fase 5: Deployment Aplikasi dan Domain</h2>
+    <table class="data-table">
+        <tr>
+            <th>Tipe Record</th>
+            <th>Name / Host</th>
+            <th>Value / Target (IP AWS)</th>
+            <th>TTL</th>
+        </tr>
+        <tr><td>A</td><td>@</td><td>&lt;IP-Publik-AWS&gt;</td><td>3600</td></tr>
+        <tr><td>A</td><td>www</td><td>&lt;IP-Publik-AWS&gt;</td><td>3600</td></tr>
+    </table>
+    <ul>
+        <li>[✔] Mengunggah file website menggunakan SFTP/Git ke direktori web[cite: 5].</li>
+        <li>[✔] Memastikan propagasi DNS selesai[cite: 5].</li>
+        <li>[✔] Menginstal Let's Encrypt (Certbot) dan mengaktifkan HTTPS[cite: 5].</li>
+    </ul>
+
+    <!-- Fase 6 -->
+    <h2>Fase 6: Manajemen, Monitoring & Backup</h2>
+    <ul>
+        <li><strong>Rata-rata CPU Utilization:</strong> ~2.5%[cite: 5]</li>
+        <li><strong>Status Check Failed:</strong> 0%[cite: 5]</li>
+    </ul>
+    <p><strong>Langkah Backup (Snapshot):</strong> Buka menu Volumes di konsol EC2 > Pilih Volume > Actions > Create Snapshot[cite: 5].</p>
+
+</div>
+
+</body>
+</html>
